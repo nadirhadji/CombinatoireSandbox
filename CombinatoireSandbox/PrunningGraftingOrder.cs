@@ -128,7 +128,14 @@ namespace CombinatoireSandbox.PrunningGraftingOrder
                     var leftSuccessors = Successors(n.Gauche).Select(t1 => new Noeud(t1, n.Droite) as ElementArbre).ToList();
                     var rightSuccessors = Successors(n.Droite).Select(t2 => new Noeud(n.Gauche, t2) as ElementArbre).ToList();
                     var combined = leftSuccessors.Concat(rightSuccessors).ToList();
-                    combined.Add(new Noeud(FillLastLeaf(n.Gauche), DeleteFirstNode(n.Droite)));
+                    
+                    try 
+                    {
+                        var centerSuccesor = new List<Noeud>();
+                        centerSuccesor = centerSuccesor.Add(new Noeud(FillLastLeaf(n.Gauche), DeleteFirstNode(n.Droite)));
+                        combined.Concat(centerSuccesor);
+                    } catch (Exception e) {}
+                                        
                     return combined;
 
                 default:
