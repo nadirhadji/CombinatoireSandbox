@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CombinatoireSandbox": {
+      "commandName": "Project",
+      "console": "internalConsole"
+    }
+  }
+}

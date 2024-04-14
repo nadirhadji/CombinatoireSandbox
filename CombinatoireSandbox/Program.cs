@@ -1,14 +1,5 @@
-﻿using CombinatoireSandbox.ArbreBinaire;
-using CombinatoireSandbox.PrunningGraftingOrder;
+﻿using CombinatoireSandbox.PrunningGrafting;
 
-int taille = 5;
+Console.WriteLine("Hello");
 
-var arbres = RecursivePrunningGraftingOrder.GenererToutLesArbres(taille);
-var premierNoeud = (Noeud)arbres.First();
-
-var succeseursPGOpremierNoeud = RecursivePrunningGraftingOrder.Successors(premierNoeud);
-
-foreach (var t in succeseursPGOpremierNoeud)
-{
-    Console.WriteLine(t.Afficher());
-}
+RecursivePrunningGraftingOrder.Executer(5);
