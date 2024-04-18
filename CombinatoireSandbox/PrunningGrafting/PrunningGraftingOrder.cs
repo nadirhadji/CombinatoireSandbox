@@ -1,7 +1,4 @@
 ﻿using CombinatoireSandbox.ArbreBinaire;
-using QuikGraph;
-using QuikGraph.Graphviz;
-using QuikGraph.Graphviz.Dot;
 using System.Diagnostics;
 
 namespace CombinatoireSandbox.PrunningGrafting
@@ -161,14 +158,34 @@ namespace CombinatoireSandbox.PrunningGrafting
             return resultat;
         }
 
+        public static Dictionary<int, (ElementArbre, List<ElementArbre>)> GenererOrdreGraftingPrunning2(int taille)
+        {
+            var couvertures = new Dictionary<int, (ElementArbre, List<ElementArbre>)>();
+
+            var arbres = GenererToutLesArbres(taille);
+
+            foreach (var arbre in arbres)
+            {
+                var succuseurs = Successors(arbre);
+                couvertures.Add(arbre.GetHashCode(), (arbre, succuseurs));
+
+                foreach (var succ in succuseurs)
+                {
+                    Console.WriteLine("Sucesseur : ");
+                    Console.WriteLine(succ.Afficher());
+                    Console.WriteLine("\n");
+                }
+            }
+
+            return couvertures;
+        }
+
         public static void GenererOrdreGraftingPrunning(int taille)
         {
             var arbres = GenererToutLesArbres(taille);
 
             foreach (var arbre in arbres)
             {
-                var graphzivArbre = ArbreBinaireExtension.GenererGraphviz(arbre);
-
                 Console.WriteLine("Arbre : ");
                 Console.WriteLine(arbre.Afficher());
                 Console.WriteLine("\n");
@@ -178,8 +195,6 @@ namespace CombinatoireSandbox.PrunningGrafting
 
                 foreach (var succ in succuseurs)
                 {
-                    var graphzivSucc = ArbreBinaireExtension.GenererGraphviz(succ);
-
                     Console.WriteLine("Sucesseur : ");
                     Console.WriteLine(succ.Afficher());
                     Console.WriteLine("\n");
@@ -187,43 +202,47 @@ namespace CombinatoireSandbox.PrunningGrafting
             }
         }
 
-        public static string GenererOrdreGraftingPrunningGraphviz(int taille)
+        public static MetaGraph GenererOrdreGraftingPrunningGraphviz(int taille)
         {
             var arbres = GenererToutLesArbres(taille).ToList();
 
-            // Convertir the poset en a QuikGraph graph
-            var graph = new AdjacencyGraph<string, Edge<string>>();
+            var poset = new MetaGraph();
+            var graphNodes = new Dictionary<string, GraphNode>();
 
-            for (int i = 0; i < arbres.Count; i++)
+            foreach (var arbre in arbres)
             {
-                var currentId = $"T{i+1} [label=< {ArbreBinaireExtension.GenererGraphviz(arbres[i])} >]";
+                // Générer la représentation Graphviz de l'arbre
+                var arbreData = ArbreBinaireExtension.ConstruireAdjacencyGraph(arbre);
+                var graphNode = new GraphNode(arbreData);
 
-                graph.AddVertex(currentId);
+                var code = arbre.Afficher();
+                graphNodes[code] = graphNode;
 
-                // Add an edge from each tree to its successors
-                var successeurs = Successors(arbres[i]);
+                poset.AddBinaryTree(graphNode); // Ajouter chaque arbre comme un nœud dans le poset
+            }
+
+            // Connexion des arbres binaires dans le poset
+            foreach (var arbre in arbres)
+            {
+                Console.WriteLine("Arbre : ");
+                Console.WriteLine(arbre.Afficher());
+                Console.WriteLine("\n");
+
+                var graphNode = graphNodes[arbre.Afficher()];
+                var successeurs = Successors(arbre);
+
                 foreach (var succ in successeurs)
                 {
-                    var succId = $"T{arbres.IndexOf(succ)+1} [label=< {ArbreBinaireExtension.GenererGraphviz(succ)} >]";
-                    graph.AddVerticesAndEdge(new Edge<string>(currentId, succId));
+                    // Lier le nœud actuel à son successeur
+                    poset.ConnectBinaryTrees(graphNode, graphNodes[succ.Afficher()]);
+
+                    Console.WriteLine("Successeur : ");
+                    Console.WriteLine(succ.Afficher());
+                    Console.WriteLine("\n");
                 }
             }
 
-            // Generate the Graphviz representation of the poset
-            var graphviz = new GraphvizAlgorithm<string, Edge<string>>(graph);
-
-            // Configure the vertex formatting
-            graphviz.FormatVertex += (sender, args) =>
-            {
-                args.VertexFormat.Shape = GraphvizVertexShape.Unspecified;
-                args.VertexFormat.Style = GraphvizVertexStyle.Unspecified;
-                args.VertexFormat.FillColor = GraphvizColor.White;
-            };
-
-            // Generate the Graphviz text
-            var graphvizText = graphviz.Generate();
-
-            return graphvizText;
+            return poset;
         }
 
         public static void GenererImageGraphviz(string contenuDot, string cheminImageSortie)
@@ -262,9 +281,9 @@ namespace CombinatoireSandbox.PrunningGrafting
             File.Delete(fichierTempDot);
         }
 
-        private static string GenererNomFichierArbreBinaire(int tailleArbreBinaire)
+        private static string GenererNomFichierArbreBinaire(string path, int tailleArbreBinaire)
         {
-            string baseDir = $"C:\\Users\\nadir\\Data\\Graphviz\\PrunningGraftingOrder\\Taille-{tailleArbreBinaire}\\"; // Répertoire de base
+            string baseDir = $"{path}\\Taille-{tailleArbreBinaire}\\"; // Répertoire de base
 
             if (!Directory.Exists(baseDir))
             {
@@ -280,10 +299,11 @@ namespace CombinatoireSandbox.PrunningGrafting
             return fullPath;
         }
 
-        public static void Executer(int nombreNoeudInterne)
+        public static void Executer(int nombreNoeudInterne, string outputPath)
         {
-            var graphzivText = GenererOrdreGraftingPrunningGraphviz(nombreNoeudInterne);
-            var nomFichier = GenererNomFichierArbreBinaire(nombreNoeudInterne);
+            var metaGraph = GenererOrdreGraftingPrunningGraphviz(nombreNoeudInterne);
+            var graphzivText = MetaGraph.GenerateDotForMetaGraph(metaGraph);
+            var nomFichier = GenererNomFichierArbreBinaire(outputPath, nombreNoeudInterne);
             GenererImageGraphviz(graphzivText, nomFichier);
         }
     }

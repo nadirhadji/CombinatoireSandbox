@@ -36,6 +36,13 @@ public static class ArbreBinaireExtension
         }
     }
 
+    public static AdjacencyGraph<string, Edge<string>> ConstruireAdjacencyGraph(ElementArbre arbre)
+    {
+        var graph = new AdjacencyGraph<string, Edge<string>>();
+        ConstruireGraphe(arbre, graph);
+        return graph;
+    }
+
     public static string GenererGraphviz(ElementArbre arbre)
     {
         // Convertir l'arbre binaire en graphe QuikGraph

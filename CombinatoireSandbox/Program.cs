@@ -2,4 +2,6 @@
 
 Console.WriteLine("Hello");
 
-RecursivePrunningGraftingOrder.Executer(5);
+var outputPath = "C:\\Users\\nadir\\Data\\Graphviz\\PrunningGraftingOrder";
+
+RecursivePrunningGraftingOrder.Executer(4, outputPath);
