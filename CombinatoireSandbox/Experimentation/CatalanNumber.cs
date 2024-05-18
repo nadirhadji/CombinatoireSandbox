@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace CombinatoireSandbox.Catalan
+namespace CombinatoireSandbox.Experimentation
 {
     public class CatalanNumber
     {
@@ -8,7 +8,7 @@ namespace CombinatoireSandbox.Catalan
         {
             var factorialN = Factorial(n, 1);
             var factorialNplus1 = factorialN * (n + 1);
-            var factorialNtime2 = Factorial((n * 2), 1);
+            var factorialNtime2 = Factorial(n * 2, 1);
 
             return factorialNtime2 / (factorialNplus1 * factorialN);
         }

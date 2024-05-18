@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CombinatoireSandbox.Permutoide
+namespace CombinatoireSandbox.Experimentation
 {
     public class Permutoide
     {
 
         public Permutoide() { }
 
-        public void ObtenirInverseDePermutation(String permutation)
+        public void ObtenirInverseDePermutation(string permutation)
         {
             // Convertir la chaîne de permutation en tableau d'entiers
             int[] permutationArray = Array.ConvertAll(permutation.Split(' '), int.Parse);
@@ -27,7 +25,7 @@ namespace CombinatoireSandbox.Permutoide
             }
 
             // Convertir le tableau inverse en chaîne pour l'affichage
-            string inversePermutation = String.Join(" ", inverse);
+            string inversePermutation = string.Join(" ", inverse);
             Console.WriteLine($"La permutation inverse de {permutation} est {inversePermutation}");
         }
 

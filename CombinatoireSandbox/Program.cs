@@ -1,7 +1,13 @@
-﻿using CombinatoireSandbox.PrunningGrafting;
+﻿using CombinatoireSandbox.PrunningGrafting.PrunningGraftingK;
 
-Console.WriteLine("Hello");
+const string repertoireArbresBinaires = "C:\\Users\\nadir\\source\\repos\\CombinatoireSandbox\\CombinatoireSandbox\\Images\\Arbres\\ArbresBinaires";
+const string repertoirePosetsBinaire = "C:\\Users\\nadir\\source\\repos\\CombinatoireSandbox\\CombinatoireSandbox\\Images\\Posets\\PrunningGraftingBinaire";
 
-var outputPath = "C:\\Users\\nadir\\Data\\Graphviz\\PrunningGraftingOrder";
+const string repertoireArbresK = "C:\\Users\\nadir\\source\\repos\\CombinatoireSandbox\\CombinatoireSandbox\\Images\\Arbres\\ArbresK";
+const string repertoirePosetsK = "C:\\Users\\nadir\\source\\repos\\CombinatoireSandbox\\CombinatoireSandbox\\Images\\Posets\\PrunningGraftingK";
 
-RecursivePrunningGraftingOrder.Executer(4, outputPath);
+//var prunningGraftingBinaire = new PrunningGraftingBinaire(repertoirePosetsBinaire, repertoireArbresBinaires);
+//prunningGraftingBinaire.ObtenirPoset(4);
+
+var prunningGraftingK = new PrunningGraftingK(repertoirePosetsK, repertoireArbresK);
+prunningGraftingK.ObtenirPoset(3, 3);
