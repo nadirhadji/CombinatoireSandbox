@@ -69,11 +69,12 @@ namespace CombinatoireSandbox.PrunningGrafting.PrunningGraftingK
             else if (elementArbre is Noeud)
             {
                 var noeud = elementArbre as Noeud;
-                var nombre_enfants = noeud.Enfants.Count;
+                var nombreEnfants = noeud.Enfants.Count;
 
                 // Etape 1 - Plongée recursive ************************
                 var combinee = new List<ElementArbreK>();
-                for (int i = 0; i < nombre_enfants; i++)
+
+                for (int i = 0; i < nombreEnfants; i++)
                 {
                     var enfant = noeud.Enfants[i];
 
@@ -82,7 +83,7 @@ namespace CombinatoireSandbox.PrunningGrafting.PrunningGraftingK
 
                     var successeurs = Successors(enfant, k);
 
-                    var nouveauxNoeuds = new List<ElementArbreK>();
+                    var nouveauxNoeudsRecursif = new List<ElementArbreK>();
 
                     for (int j = 0; j < successeurs.Count; j++)
                     {
@@ -91,43 +92,42 @@ namespace CombinatoireSandbox.PrunningGrafting.PrunningGraftingK
                         nouveauEnfants.AddRange(freresGauche);
                         nouveauEnfants.Add(sucesseur);
                         nouveauEnfants.AddRange(freresDroite);
-                        var nouveauNoeud = new Noeud(nouveauEnfants);
-                        nouveauxNoeuds.Add(nouveauNoeud);
+                        var noeudReconstruit = new Noeud(nouveauEnfants);
+                        nouveauxNoeudsRecursif.Add(noeudReconstruit);
                     }
 
-                    combinee.AddRange(nouveauxNoeuds);
+                    combinee.AddRange(nouveauxNoeudsRecursif);
                 }
 
-                // Etape 2 - Generation des noeud sont le premier noeud enfant est supprimee 
-                var arbresAvecPremierNoeudSuprimme = new List<Option<ElementArbreK>>();
+                // Etape 2 - Generation des noeuds dont le premier noeud enfant est supprimee 
+                var arbresAvecPremierNoeudSuprimee = new List<Option<ElementArbreK>>();
 
-                for (int ii = 1; ii < nombre_enfants; ii++)
+                for (int l = 1; l < nombreEnfants; l++)
                 {
-                    var nouveauNoeudApresSupression = DeleteFirstNode(noeud.Enfants[ii], k);
-                    arbresAvecPremierNoeudSuprimme.Add(nouveauNoeudApresSupression);
+                    var nouveauNoeudApresSupression = DeleteFirstNode(noeud.Enfants[l], k);
+                    arbresAvecPremierNoeudSuprimee.Add(nouveauNoeudApresSupression);
                 }
 
                 // Etape 3 - Transfert des noeuds
-                for (int jj = 0; jj < arbresAvecPremierNoeudSuprimme.Count; jj++)
+                for (int m = 0; m < arbresAvecPremierNoeudSuprimee.Count; m++)
                 {
-                    var nouveauJ = arbresAvecPremierNoeudSuprimme[jj];
+                    var arbreAvecPremierNoeudSuprimee = arbresAvecPremierNoeudSuprimee[m];
 
-                    if (nouveauJ.HasValue == true)
+                    if (arbreAvecPremierNoeudSuprimee.HasValue == true)
                     {
-                        var ancienGauche = noeud.Enfants.Take(jj).ToList();
-                        var ancienDroite = noeud.Enfants.Skip(jj + 2).ToList();
+                        var ancienGauche = noeud.Enfants.Take(m).ToList();
+                        var ancienDroite = noeud.Enfants.Skip(m + 2).ToList();
 
-                        var filledLastLeaf = FillLastLeaf(noeud.Enfants[jj], k);
+                        var arbreAvecDerniereFeuilleRemplacee = FillLastLeaf(noeud.Enfants[m], k);
 
-                        // Construction du nouveau noeud apres coupe et greffe
-                        var newEnfants = new List<ElementArbreK>();
-                        newEnfants.AddRange(ancienGauche);
-                        newEnfants.Add(filledLastLeaf);
-                        newEnfants.Add(nouveauJ.Value);
-                        newEnfants.AddRange(ancienDroite);
-                        var noeudCoupeGreffe = new Noeud(newEnfants);
+                        var enfantNoeudCoupeeEtGreffee = new List<ElementArbreK>();
+                        enfantNoeudCoupeeEtGreffee.AddRange(ancienGauche);
+                        enfantNoeudCoupeeEtGreffee.Add(arbreAvecDerniereFeuilleRemplacee);
+                        enfantNoeudCoupeeEtGreffee.Add(arbreAvecPremierNoeudSuprimee.Value);
+                        enfantNoeudCoupeeEtGreffee.AddRange(ancienDroite);
+                        var arbreApresCoupeEtGreffe = new Noeud(enfantNoeudCoupeeEtGreffee);
 
-                        combinee.Insert(0, noeudCoupeGreffe);
+                        combinee.Insert(0, arbreApresCoupeEtGreffe);
                     }
                 }
 
@@ -137,56 +137,7 @@ namespace CombinatoireSandbox.PrunningGrafting.PrunningGraftingK
             {
                 throw new InvalidOperationException("Oulala, c'est le temps de debugger!");
             }
-
-            //var leftSuccessors = Successors(n.Gauche).Select(t1 => new Noeud(t1, n.Milieu1, n.Milieu2, n.Droite) as ElementArbreBinaire).ToList();
-            //var milleu1Successors = Successors(n.Milieu1).Select(t2 => new Noeud(n.Gauche, t2, n.Milieu2, n.Droite) as ElementArbreBinaire).ToList();
-            //var milleu2Successors = Successors(n.Milieu2).Select(t3 => new Noeud(n.Gauche, n.Milieu1, t3, n.Droite) as ElementArbreBinaire).ToList();
-            //var rightSuccessors = Successors(n.Droite).Select(t4 => new Noeud(n.Gauche, n.Milieu1, n.Milieu2, t4) as ElementArbreBinaire).ToList();
-
-            //var combined = leftSuccessors.Concat(milleu1Successors).Concat(milleu2Successors).Concat(rightSuccessors).ToList();
-
-            //Option<ElementArbreBinaire> nouveauMilieu1 = DeleteFirstNode(n.Milieu1);
-            //Option<ElementArbreBinaire> nouveauMilieu2 = DeleteFirstNode(n.Milieu2);
-            //Option<ElementArbreBinaire> nouveauDroite = DeleteFirstNode(n.Droite);
-
-            //if (nouveauMilieu1.HasValue == true)
-            //{
-            //    ElementArbreBinaire filledLastLeafGauche = FillLastLeaf(n.Gauche);
-            //    combined.Insert(0, new Noeud(filledLastLeafGauche, nouveauMilieu1.Value, n.Milieu, n.Droite));
-            //}
-
-            //if (nouveauMilieu2.HasValue == true)
-            //{
-            //    ElementArbreBinaire filledLastLeafMilieu1 = FillLastLeaf(n.Milieu1);
-            //    combined.Insert(0, new Noeud(n.Gauche, filledLastLeafMilieu1, nouveauMilieu2.Value, n.Droite));
-            //}
-
-            //if (nouveauDroite.HasValue == true)
-            //{
-            //    ElementArbreBinaire filledLastLeafMilieu2 = FillLastLeaf(n.Milieu2);
-            //    combined.Insert(0, new Noeud(n.Gauche, n.Milieu1, filledLastLeafMilieu2, nouveauDroite.Value));
-            //}
-
-            // Autrement , 
-            ////if (nouveauDroite.HasValue == false)
-            ////{
-            ////    return combined;
-            ////}
-            ////else
-            ////{
-            ////    ElementArbreBinaire filledLastLeafGauche = FillLastLeaf(n.Gauche);
-            ////    ElementArbreBinaire filledLastLeafMilieu1 = FillLastLeaf(n.Milieu1);
-            ////    ElementArbreBinaire filledLastLeafMilieu2 = FillLastLeaf(n.Milieu2);
-
-
-            ////    combined.Insert(0, new Noeud(filledLastLeafGauche, nouveauMilieu1.Value, ancienMilieu2, ancienDroit));
-            ////    combined.Insert(0, new Noeud(ancienGauche, filledLastLeafMilieu1, nouveauMilieu2.Value, ancienDroit));
-            ////    combined.Insert(0, new Noeud(ancienGauche, ancienMilieu1, filledLastLeafMilieu2, nouveauDroite.Value));
-            ////}
-
-            //return combined;
         }
-
 
         public ElementArbreK FillLastLeaf(ElementArbreK element, int k)
         {

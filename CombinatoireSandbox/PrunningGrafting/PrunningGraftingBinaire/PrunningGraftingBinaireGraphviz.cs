@@ -36,11 +36,10 @@ namespace CombinatoireSandbox.PrunningGrafting.PrunningGraftingBinaire
             foreach (var arbre in toutLesArbres)
             {
                 var graphvizArbreBinaireService = new ArbreBinaireGraphviz();
-                var parenthesageArbre = arbre.ObtenirParenthesage();
-                var parenthesageLettre = ConvertirParenthesageEnLettre(parenthesageArbre);
-                var cheminVersImage = graphvizArbreBinaireService.GenererImageArbreBinaire(arbre, parenthesageLettre, nombreNoeud, repertoireArbres);
+                var parenthesageArbre = arbre.ObtenirParenthesageLettres();
+                var cheminVersImage = graphvizArbreBinaireService.GenererImageArbreBinaire(arbre, parenthesageArbre, nombreNoeud, repertoireArbres);
 
-                dot.AppendLine($"{parenthesageLettre} [label=\"\" image = \"{cheminVersImage}\"]; ");
+                dot.AppendLine($"{parenthesageArbre} [label=\"\" image = \"{cheminVersImage}\"]; ");
             }
 
             var relationOrdre = DefinirRelationOrdreEnGraphviz(mapDesSucceseurs);
@@ -59,25 +58,16 @@ namespace CombinatoireSandbox.PrunningGrafting.PrunningGraftingBinaire
 
             foreach (var relationOrdre in mapDesSucceseurs)
             {
-                var parenthesageArbre = relationOrdre.Key.ObtenirParenthesage();
-                var nomNoeudGraphvizArbre = ConvertirParenthesageEnLettre(parenthesageArbre);
+                var parenthesageArbre = relationOrdre.Key.ObtenirParenthesageLettres();
 
                 foreach (var successeur in relationOrdre.Value)
                 {
-                    var parenthesageSucesseur = successeur.ObtenirParenthesage();
-                    var nomNoeudGraphvizSucceseur = ConvertirParenthesageEnLettre(parenthesageSucesseur);
-
-                    dot.AppendLine($"{nomNoeudGraphvizArbre} -- {nomNoeudGraphvizSucceseur} [penwidth=1]; ");
+                    var parenthesageSucesseur = successeur.ObtenirParenthesageLettres();
+                    dot.AppendLine($"{parenthesageArbre} -- {parenthesageSucesseur} [penwidth=1]; ");
                 }
             }
 
             return dot.ToString();
-        }
-
-        //Les parenthese ne sont pas tolere pour les noms de nooeud dans graphviz
-        private string ConvertirParenthesageEnLettre(string parenthesage)
-        {
-            return new string(parenthesage.Select(c => c == '(' ? 'N' : 'F').ToArray());
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using CombinatoireSandbox.PrunningGrafting.PrunningGraftingBinaire;
+﻿using CombinatoireSandbox.Arbre.ArbreBinaire;
+using CombinatoireSandbox.Arbre.ArbreGeneraux;
+using CombinatoireSandbox.PrunningGrafting.PrunningGraftingBinaire;
 using CombinatoireSandbox.PrunningGrafting.PrunningGraftingK;
 
 namespace Combinatoire
@@ -21,9 +23,9 @@ namespace Combinatoire
         static void AfficherMenu()
         {
             Console.Clear();
-            Console.WriteLine(" =================================================================== ");
-            Console.WriteLine("               Combinatoire sur les arbres binaires                ");
-            Console.WriteLine(" =================================================================== ");
+            Console.WriteLine(" ======================================================================= ");
+            Console.WriteLine("                    Combinatoire sur les arbres binaires                 ");
+            Console.WriteLine(" ======================================================================= ");
             Console.WriteLine();
             Console.WriteLine("  Université du Québec a Montréal                               ");
             Console.WriteLine("  Initiation a la recherche                                     ");
@@ -32,22 +34,25 @@ namespace Combinatoire
             Console.WriteLine("  Mai 2024                                                      ");
 
             Console.WriteLine();
-            Console.WriteLine(" +-----------------------------------------------------------------+ ");
-            Console.WriteLine(" |                      Génerateurs d'arbres                       | ");
-            Console.WriteLine(" +-----------------------------------------------------------------+ ");
-            Console.WriteLine(" |  [1] : Générateur d'arbres binaires                             | ");
-            Console.WriteLine(" |  [2] : Générateur d'arbres d'arité K                            | ");
-            Console.WriteLine(" +-----------------------------------------------------------------+ ");
-            Console.WriteLine(" |                        Ordre coupe-greffe                       | ");
-            Console.WriteLine(" +-----------------------------------------------------------------+ ");
-            Console.WriteLine(" |  [3] : Générateur de poset coupe-greffe sur les arbres binaires | ");
-            Console.WriteLine(" |  [4] : Générateur de poset coupe-greffe sur les arbres généraux | ");
-            Console.WriteLine(" +-----------------------------------------------------------------+ ");
-            Console.WriteLine(" |                              Autres                             | ");
-            Console.WriteLine(" +-----------------------------------------------------------------+ ");
-            Console.WriteLine(" |  [5] : Definir répertoire des résultats                         | ");
-            Console.WriteLine(" |  [0] : Quitter                                                  | ");
-            Console.WriteLine(" +-----------------------------------------------------------------+ ");
+            Console.WriteLine(" +---------------------------------------------------------------------+ ");
+            Console.WriteLine(" |  Génerateurs d'arbres                                               | ");
+            Console.WriteLine(" +---------------------------------------------------------------------+ ");
+            Console.WriteLine(" |      [1] : Générateur d'arbres binaires                             | ");
+            Console.WriteLine(" |      [2] : Générateur d'arbres d'arité K                            | ");
+            Console.WriteLine(" +---------------------------------------------------------------------+ ");
+            Console.WriteLine(" |  Ordre coupe-greffe                                                 | ");
+            Console.WriteLine(" +---------------------------------------------------------------------+ ");
+            Console.WriteLine(" |      [3] : Générateur de poset coupe-greffe sur les arbres binaires | ");
+            Console.WriteLine(" |      [4] : Générateur de poset coupe-greffe sur les arbres généraux | ");
+            Console.WriteLine(" +---------------------------------------------------------------------+ ");
+            Console.WriteLine(" |  Configuration                                                      | ");
+            Console.WriteLine(" +---------------------------------------------------------------------+ ");
+            Console.WriteLine(" |      [5] : Afficher nom répertoire des résultats                    | ");
+            Console.WriteLine(" +---------------------------------------------------------------------+ ");
+            Console.WriteLine(" |  Autres                                                             | ");
+            Console.WriteLine(" +---------------------------------------------------------------------+ ");
+            Console.WriteLine(" |      [0] : Quitter                                                  | ");
+            Console.WriteLine(" +---------------------------------------------------------------------+ ");
             Console.WriteLine();
             Console.Write("Veuillez saisir une option :");
         }
@@ -69,9 +74,8 @@ namespace Combinatoire
                 case "4":
                     GenerateGeneralTreePoset();
                     break;
-                    break;
                 case "5":
-                    ConfigurerRepertoireResultats();
+                    AfficherRepertoireResultats();
                     break;
                 case "0":
                     AfficherLigneAvecTemps("Merci d'avoir utilisé l'application. Au revoir !");
@@ -96,11 +100,12 @@ namespace Combinatoire
                 AfficherLigneAvecTemps("En cours ...");
                 Console.WriteLine();
 
-                // Placeholder for actual tree generation logic
+                var generateur = new ArbreBinaireGraphviz();
+                var repertoire = generateur.GenererImagesToutLesArbreBinaire(n, RepertoireResultatArbres);
 
                 AfficherLigneAvecTemps($"Succès - Les arbres binaires avec {n} nœuds ont été générés.");
                 Console.WriteLine();
-                AfficherLigneAvecTemps("Répertoire des résultats :  /path/to/generated/images");
+                AfficherLigneAvecTemps($"Répertoire des résultats: {repertoire}");
                 WaitForKeyPress();
             }
         }
@@ -118,11 +123,13 @@ namespace Combinatoire
                 AfficherLigneAvecTemps("En cours ...");
                 Console.WriteLine();
 
+                var generateur = new ArbreKGraphviz();
+                var repertoire = generateur.GenererImagesToutLesArbreK(n, k, RepertoireResultatArbres);
                 // Placeholder for actual tree generation logic
 
                 AfficherLigneAvecTemps($"Succès - Les arbres d'arité K avec {n} nœuds et {k} arêtes par nœud ont été générés.");
                 Console.WriteLine();
-                AfficherLigneAvecTemps("Répertoire des résultats :  /path/to/generated/images");
+                AfficherLigneAvecTemps($"Répertoire des résultats: {repertoire}");
                 WaitForKeyPress();
             }
         }
@@ -173,17 +180,28 @@ namespace Combinatoire
             }
         }
 
-        static void ConfigurerRepertoireResultats()
+        static void AfficherRepertoireResultats()
         {
+            Console.WriteLine("===========================================================");
+            Console.WriteLine("         Afficher nom des répertoires de résultats         ");
+            Console.WriteLine("===========================================================");
+            Console.WriteLine();
 
+            Console.WriteLine($"- Répertoire de destination pour images d'arbres: \n\n\t {RepertoireResultatArbres}");
+            Console.WriteLine();
+
+            Console.WriteLine($"- Répertoire de destination pour images de posets: \n\n\t {RepertoireResultatPosets}");
+            Console.WriteLine();
+
+            WaitForKeyPress();
         }
 
-        static bool TryGetValidInput(string prompt, out int result)
+        static bool TryGetValidInput(string message, out int result)
         {
             result = 0;
             while (true)
             {
-                AfficherLigneAvecTemps(prompt, true);
+                AfficherLigneAvecTemps(message, true);
                 string input = Console.ReadLine();
                 if (int.TryParse(input, out result) && result > 0)
                 {
