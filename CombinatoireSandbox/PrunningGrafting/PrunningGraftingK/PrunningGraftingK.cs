@@ -22,6 +22,7 @@ namespace CombinatoireSandbox.PrunningGrafting.PrunningGraftingK
             var graphvizService = new PrunningGraftingKGraphviz(repertoirePosets, repertoireArbres);
             var nomFichier = graphvizService.GenererVisualisationPruningGraftingK(mapDesSucesseurs, toutLesArbres, n, k);
             //var isLattice = IsLattice(mapDesSucesseurs, k);
+            //Console.WriteLine($"Poset Coupe Greffe n = {n} ; k = {k} est un trelli ? {isLattice}");
             return nomFichier;
         }
 
