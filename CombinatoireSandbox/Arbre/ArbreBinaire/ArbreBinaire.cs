@@ -5,6 +5,7 @@ namespace CombinatoireSandbox.Arbre.ArbreBinaire
     public abstract class ElementArbreBinaire
     {
         public abstract string ObtenirParenthesage();
+        public abstract string ObtenirParenthesageLettres();
         public abstract override int GetHashCode();
         public override bool Equals(object obj)
         {
@@ -17,6 +18,11 @@ namespace CombinatoireSandbox.Arbre.ArbreBinaire
         public override string ObtenirParenthesage()
         {
             return ")";
+        }
+
+        public override string ObtenirParenthesageLettres()
+        {
+            return "F";
         }
 
         public override int GetHashCode()
@@ -49,6 +55,16 @@ namespace CombinatoireSandbox.Arbre.ArbreBinaire
             builder.Append(Gauche.ObtenirParenthesage());
             builder.Append(Droite.ObtenirParenthesage());
             builder.Append(')');
+            return builder.ToString();
+        }
+
+        public override string ObtenirParenthesageLettres()
+        {
+            var builder = new StringBuilder();
+            builder.Append('N');
+            builder.Append(Gauche.ObtenirParenthesageLettres());
+            builder.Append(Droite.ObtenirParenthesageLettres());
+            builder.Append('F');
             return builder.ToString();
         }
 

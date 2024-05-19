@@ -5,6 +5,7 @@ namespace CombinatoireSandbox.Arbre.ArbreGeneraux
     public abstract class ElementArbreK
     {
         public abstract string ObtenirParenthesage();
+        public abstract string ObtenirParenthesageLettres();
         public abstract override int GetHashCode();
         public override bool Equals(object obj)
         {
@@ -17,6 +18,11 @@ namespace CombinatoireSandbox.Arbre.ArbreGeneraux
         public override string ObtenirParenthesage()
         {
             return ")";
+        }
+
+        public override string ObtenirParenthesageLettres()
+        {
+            return "F";
         }
 
         public override int GetHashCode()
@@ -54,6 +60,18 @@ namespace CombinatoireSandbox.Arbre.ArbreGeneraux
                 builder.Append(enfant.ObtenirParenthesage());
             }
             builder.Append(')');
+            return builder.ToString();
+        }
+
+        public override string ObtenirParenthesageLettres()
+        {
+            var builder = new StringBuilder();
+            builder.Append('N');
+            foreach (var enfant in Enfants)
+            {
+                builder.Append(enfant.ObtenirParenthesageLettres());
+            }
+            builder.Append('F');
             return builder.ToString();
         }
 

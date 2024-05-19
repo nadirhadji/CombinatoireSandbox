@@ -6,12 +6,12 @@ namespace CombinatoireSandbox.Graphviz
     {
         public static void ImprimerImageGraphviz(string contenuDot, string cheminImageSortie, bool forcerRecreation = false)
         {
-            if (forcerRecreation && EstFichierExistant(cheminImageSortie))
+            if (forcerRecreation && FichierUtils.EstFichierExistant(cheminImageSortie))
             {
-                SupprimerFichier(cheminImageSortie);
+                FichierUtils.SupprimerFichier(cheminImageSortie);
             }
 
-            if (!EstFichierExistant(cheminImageSortie))
+            if (!FichierUtils.EstFichierExistant(cheminImageSortie))
             {
                 GenererImageGraphviz(contenuDot, cheminImageSortie);
             }
@@ -43,54 +43,39 @@ namespace CombinatoireSandbox.Graphviz
                 process.WaitForExit();
 
                 // Affichage des erreurs et de la sortie standard pour le débogage
-                Console.WriteLine("Output:");
-                Console.WriteLine(output);
-                Console.WriteLine("Errors:");
-                Console.WriteLine(errors);
+                if (!string.IsNullOrEmpty(output))
+                {
+                    Console.WriteLine("Output:");
+                    Console.WriteLine(output);
+                }
+
+                if (!string.IsNullOrEmpty(errors))
+                {
+                    Console.WriteLine("Errors:");
+                    Console.WriteLine(errors);
+                }
+
+                if (string.IsNullOrEmpty(errors))
+                {
+                    Console.WriteLine($"Impression complété pour : {cheminImageSortie} \n");
+                }
             }
 
             // Suppression du fichier temporaire
             File.Delete(fichierTempDot);
         }
 
-        public static void SupprimerFichier(string chemin)
-        {
-            if (File.Exists(chemin))
-            {
-                File.Delete(chemin);
-            }
-        }
-
-        public static bool EstFichierExistant(string cheminVersFichier)
-        {
-            return File.Exists(cheminVersFichier);
-        }
-
         public static string GenererNomFichierPourPoset(string cheminBase, int n, int k)
         {
             string repertoireBase = $"{cheminBase}\\PrunningGrafting-K-{k}";
             string nomFichier = $"Poset-{n}-Noeud-{k}-Aretes";
-            return GenererNomFichier(repertoireBase, nomFichier);
+            return FichierUtils.GenererNomFichier(repertoireBase, nomFichier);
         }
 
         public static string GenererNomFichierPourArbre(string cheminBase, int n, int k, string parenthesageArbre)
         {
             string repertoireBase = $"{cheminBase}\\Arbres-N-{n}-K-{k}";
-            return GenererNomFichier(repertoireBase, parenthesageArbre);
-        }
-
-        private static string GenererNomFichier(string repertoire, string nomFichier)
-        {
-            if (!Directory.Exists(repertoire))
-            {
-                Directory.CreateDirectory(repertoire);
-            }
-
-            string extension = ".png";
-
-            string fileName = $"{nomFichier}{extension}";
-            string fullPath = Path.Combine(repertoire, fileName);
-            return fullPath;
+            return FichierUtils.GenererNomFichier(repertoireBase, parenthesageArbre);
         }
     }
 }

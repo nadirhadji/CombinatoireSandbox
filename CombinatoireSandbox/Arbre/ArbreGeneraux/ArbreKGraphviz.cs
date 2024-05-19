@@ -16,6 +16,20 @@ namespace CombinatoireSandbox.Arbre.ArbreGeneraux
             aretes = new StringBuilder();
         }
 
+        public string GenererImagesToutLesArbreK(int n, int k, string repertoireArbres)
+        {
+            var generateur = new GenerateurArbresK(n, k);
+            var arbres = generateur.ObtenirToutLesArbres();
+
+            foreach (var arbre in arbres)
+            {
+                var parenthesageLettre = arbre.ObtenirParenthesageLettres();
+                GenererImageArbreK(arbre, parenthesageLettre, n, k, repertoireArbres);
+            }
+
+            return repertoireArbres;
+        }
+
         public string GenererImageArbreK(ElementArbreK arbre, string parenthesageLettre, int n, int k, string repertoireArbres)
         {
             var scriptGraphviz = GenererGraphviz(arbre);
