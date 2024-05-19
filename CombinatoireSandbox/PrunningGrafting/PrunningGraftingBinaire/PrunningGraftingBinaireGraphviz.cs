@@ -37,10 +37,10 @@ namespace CombinatoireSandbox.PrunningGrafting.PrunningGraftingBinaire
             {
                 var graphvizArbreBinaireService = new ArbreBinaireGraphvizService();
                 var parenthesageArbre = arbre.ObtenirParenthesage();
-                var nomNoeudGraphviz = ConvertirParenthesageEnLettre(parenthesageArbre);
-                var cheminVersImage = graphvizArbreBinaireService.GenererImageArbreBinaire(arbre, nombreNoeud, repertoireArbres);
+                var parenthesageLettre = ConvertirParenthesageEnLettre(parenthesageArbre);
+                var cheminVersImage = graphvizArbreBinaireService.GenererImageArbreBinaire(arbre, parenthesageLettre, nombreNoeud, repertoireArbres);
 
-                dot.AppendLine($"{nomNoeudGraphviz} [label=\"\" image = \"{cheminVersImage}\"]; ");
+                dot.AppendLine($"{parenthesageLettre} [label=\"\" image = \"{cheminVersImage}\"]; ");
             }
 
             var relationOrdre = DefinirRelationOrdreEnGraphviz(mapDesSucceseurs);

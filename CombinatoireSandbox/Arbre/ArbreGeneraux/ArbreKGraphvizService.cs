@@ -16,15 +16,15 @@ namespace CombinatoireSandbox.Arbre.ArbreGeneraux
             aretes = new StringBuilder();
         }
 
-        public string GenererImageArbreK(ElementArbreK arbre, int n, int k, string repertoireArbres)
+        public string GenererImageArbreK(ElementArbreK arbre, string parenthesageLettre, int n, int k, string repertoireArbres)
         {
             var scriptGraphviz = GenererGraphviz(arbre);
-            var nomFichier = GraphvizUtils.GenererNomFichierPourArbre(repertoireArbres, n, k);
-            GraphvizUtils.ImprimerImageGraphviz(scriptGraphviz, nomFichier);
+            var cheminFichier = GraphvizUtils.GenererNomFichierPourArbre(repertoireArbres, n, k, parenthesageLettre);
+            GraphvizUtils.ImprimerImageGraphviz(scriptGraphviz, cheminFichier);
             compteur = 0;
             noeuds.Clear();
             aretes.Clear();
-            return nomFichier;
+            return cheminFichier;
         }
 
         public string GenererGraphviz(ElementArbreK racine)

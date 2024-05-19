@@ -16,10 +16,10 @@ namespace CombinatoireSandbox.Arbre.ArbreBinaire
             aretes = new StringBuilder();
         }
 
-        public string GenererImageArbreBinaire(ElementArbreBinaire arbre, int nombreNoeudInterne, string repertoireArbres)
+        public string GenererImageArbreBinaire(ElementArbreBinaire arbre, string parenthesageLettre, int nombreNoeudInterne, string repertoireArbres)
         {
             var scriptGraphviz = GenererGraphviz(arbre);
-            var nomFichier = GraphvizUtils.GenererNomFichierPourArbre(repertoireArbres, nombreNoeudInterne, 2);
+            var nomFichier = GraphvizUtils.GenererNomFichierPourArbre(repertoireArbres, nombreNoeudInterne, 2, parenthesageLettre);
             GraphvizUtils.ImprimerImageGraphviz(scriptGraphviz, nomFichier);
             compteur = 0;
             noeuds.Clear();

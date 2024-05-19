@@ -4,7 +4,20 @@ namespace CombinatoireSandbox.Graphviz
 {
     public static class GraphvizUtils
     {
-        public static void ImprimerImageGraphviz(string contenuDot, string cheminImageSortie)
+        public static void ImprimerImageGraphviz(string contenuDot, string cheminImageSortie, bool forcerRecreation = false)
+        {
+            if (forcerRecreation && EstFichierExistant(cheminImageSortie))
+            {
+                SupprimerFichier(cheminImageSortie);
+            }
+
+            if (!EstFichierExistant(cheminImageSortie))
+            {
+                GenererImageGraphviz(contenuDot, cheminImageSortie);
+            }
+        }
+
+        public static void GenererImageGraphviz(string contenuDot, string cheminImageSortie)
         {
             string cheminDotExe = "C:\\Program Files\\Graphviz\\bin\\dot.exe";
 
@@ -40,41 +53,43 @@ namespace CombinatoireSandbox.Graphviz
             File.Delete(fichierTempDot);
         }
 
-        public static void OuvrirFichier(string chemin)
+        public static void SupprimerFichier(string chemin)
         {
-            Process.Start(new ProcessStartInfo
+            if (File.Exists(chemin))
             {
-                FileName = chemin,
-                UseShellExecute = true,
-            });
+                File.Delete(chemin);
+            }
+        }
+
+        public static bool EstFichierExistant(string cheminVersFichier)
+        {
+            return File.Exists(cheminVersFichier);
         }
 
         public static string GenererNomFichierPourPoset(string cheminBase, int n, int k)
         {
-            string repertoireBase = $"{cheminBase}\\Taille-{n}-{k}\\";
-            string nomFichier = $"Posets-Pour-{n}-Noeud-{k}-Aretes";
+            string repertoireBase = $"{cheminBase}\\PrunningGrafting-K-{k}";
+            string nomFichier = $"Poset-{n}-Noeud-{k}-Aretes";
             return GenererNomFichier(repertoireBase, nomFichier);
         }
 
-        public static string GenererNomFichierPourArbre(string cheminBase, int n, int k)
+        public static string GenererNomFichierPourArbre(string cheminBase, int n, int k, string parenthesageArbre)
         {
-            string repertoireBase = $"{cheminBase}\\Taille-{n}-{k}\\";
-            string nomFichier = $"Arbres-{n}-Noeud-{k}-Aretes";
-            return GenererNomFichier(repertoireBase, nomFichier);
+            string repertoireBase = $"{cheminBase}\\Arbres-N-{n}-K-{k}";
+            return GenererNomFichier(repertoireBase, parenthesageArbre);
         }
 
-        private static string GenererNomFichier(string repertoire, string nom)
+        private static string GenererNomFichier(string repertoire, string nomFichier)
         {
             if (!Directory.Exists(repertoire))
             {
                 Directory.CreateDirectory(repertoire);
             }
 
-            string dateTimeFormat = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss-fff"); // Format de date/heure
-            string extension = ".png"; // Extension du fichier
+            string extension = ".png";
 
-            string fileName = $"{nom}_{dateTimeFormat}{extension}"; // Construit le nom du fichier
-            string fullPath = Path.Combine(repertoire, fileName); // Construit le chemin complet
+            string fileName = $"{nomFichier}{extension}";
+            string fullPath = Path.Combine(repertoire, fileName);
             return fullPath;
         }
     }

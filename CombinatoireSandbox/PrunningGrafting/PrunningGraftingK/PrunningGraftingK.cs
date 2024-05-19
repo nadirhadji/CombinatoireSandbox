@@ -14,14 +14,15 @@ namespace CombinatoireSandbox.PrunningGrafting.PrunningGraftingK
             this.repertoireArbres = repertoireArbres;
         }
 
-        public (string, bool) GenererPoset(int n, int k)
+        public string GenererPoset(int n, int k)
         {
-            var graphvizService = new PrunningGraftingKGraphviz(repertoirePosets, repertoireArbres);
             var toutLesArbres = GenerateurArbreK.GenererTousLesArbres(n, k);
             var mapDesSucesseurs = ObtenirMapDesSucceseurs(toutLesArbres, k);
+
+            var graphvizService = new PrunningGraftingKGraphviz(repertoirePosets, repertoireArbres);
             var nomFichier = graphvizService.GenererVisualisationPruningGraftingK(mapDesSucesseurs, toutLesArbres, n, k);
-            var isLattice = IsLattice(mapDesSucesseurs, k);
-            return (nomFichier, isLattice);
+            //var isLattice = IsLattice(mapDesSucesseurs, k);
+            return nomFichier;
         }
 
         public Dictionary<ElementArbreK, List<ElementArbreK>> ObtenirMapDesSucceseurs(List<ElementArbreK> toutLesArbres, int k)

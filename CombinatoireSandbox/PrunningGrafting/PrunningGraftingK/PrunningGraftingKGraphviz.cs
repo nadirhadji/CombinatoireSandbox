@@ -37,10 +37,10 @@ namespace CombinatoireSandbox.PrunningGrafting.PrunningGraftingK
             {
                 var graphvizArbreKService = new ArbreKGraphvizService();
                 var parenthesageArbre = arbre.ObtenirParenthesage();
-                var nomNoeudGraphviz = ConvertirParenthesageEnLettre(parenthesageArbre);
-                var cheminVersImage = graphvizArbreKService.GenererImageArbreK(arbre, n, k, repertoireArbres);
+                var parenthesageLettre = ConvertirParenthesageEnLettre(parenthesageArbre);
+                var cheminVersImage = graphvizArbreKService.GenererImageArbreK(arbre, parenthesageLettre, n, k, repertoireArbres);
 
-                dot.AppendLine($"{nomNoeudGraphviz} [label=\"\" image = \"{cheminVersImage}\"]; ");
+                dot.AppendLine($"{parenthesageLettre} [label=\"\" image = \"{cheminVersImage}\"]; ");
             }
 
             var relationOrdre = DefinirRelationOrdreEnGraphviz(mapDesSucceseurs);
