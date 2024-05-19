@@ -14,7 +14,7 @@ namespace CombinatoireSandbox.PrunningGrafting.PrunningGraftingBinaire
             this.repertoireArbres = repertoireArbres;
         }
 
-        public string ObtenirPoset(int nombreNoeud)
+        public string GenererPoset(int nombreNoeud)
         {
             var graphvizService = new PrunningGraftingBinaireGraphviz(repertoirePosets, repertoireArbres);
             var toutLesArbres = GenerateurArbreBinaire.GenererToutLesArbres(nombreNoeud);

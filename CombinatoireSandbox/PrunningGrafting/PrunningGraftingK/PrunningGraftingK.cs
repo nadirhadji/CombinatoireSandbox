@@ -14,12 +14,14 @@ namespace CombinatoireSandbox.PrunningGrafting.PrunningGraftingK
             this.repertoireArbres = repertoireArbres;
         }
 
-        public string ObtenirPoset(int n, int k)
+        public (string, bool) GenererPoset(int n, int k)
         {
             var graphvizService = new PrunningGraftingKGraphviz(repertoirePosets, repertoireArbres);
             var toutLesArbres = GenerateurArbreK.GenererTousLesArbres(n, k);
             var mapDesSucesseurs = ObtenirMapDesSucceseurs(toutLesArbres, k);
-            return graphvizService.GenererVisualisationPruningGraftingK(mapDesSucesseurs, toutLesArbres, n, k);
+            var nomFichier = graphvizService.GenererVisualisationPruningGraftingK(mapDesSucesseurs, toutLesArbres, n, k);
+            var isLattice = IsLattice(mapDesSucesseurs, k);
+            return (nomFichier, isLattice);
         }
 
         public Dictionary<ElementArbreK, List<ElementArbreK>> ObtenirMapDesSucceseurs(List<ElementArbreK> toutLesArbres, int k)
@@ -256,6 +258,83 @@ namespace CombinatoireSandbox.PrunningGrafting.PrunningGraftingK
         {
             if (Equals(t, t1)) return true;
             return Successors(t, k).Any(t2 => IsLeq(t2 as Noeud, t1 as Noeud, k));
+        }
+
+        public bool IsLattice(Dictionary<ElementArbreK, List<ElementArbreK>> mapDesSucesseurs, int k)
+        {
+            var elements = mapDesSucesseurs.Keys.ToList();
+
+            foreach (var a in elements)
+            {
+                foreach (var b in elements)
+                {
+                    if (!ExistsJoin(elements, a, b, k) || !ExistsMeet(elements, a, b, k))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        private bool ExistsJoin(List<ElementArbreK> elements, ElementArbreK a, ElementArbreK b, int k)
+        {
+            //var upperBounds = new List<ElementArbreK>();
+            //foreach (var x in elements)
+            //{
+            //    if (IsLeq(a, x, k) && IsLeq(b, x, k))
+            //    {
+            //        upperBounds.Add(x);
+            //    }
+            //}
+            //if (upperBounds.Count == 0) return false;
+
+            //ElementArbreK leastUpperBound = upperBounds[0];
+            //foreach (var x in upperBounds)
+            //{
+            //    if (IsLeq(x, leastUpperBound, k))
+            //    {
+            //        leastUpperBound = x;
+            //    }
+            //}
+            //return true;
+
+            var upperBounds = elements.Where(x => IsLeq(a, x, k) && IsLeq(b, x, k)).ToList();
+            if (upperBounds.Count == 0) return false;
+
+            var leastUpperBound = upperBounds.FirstOrDefault(ub => upperBounds.All(x => !IsLeq(x, ub, k)
+                                                                || EqualityComparer<ElementArbreK>.Default.Equals(x, ub)));
+            return leastUpperBound != null;
+        }
+
+        private bool ExistsMeet(List<ElementArbreK> elements, ElementArbreK a, ElementArbreK b, int k)
+        {
+            //var lowerBounds = new List<ElementArbreK>();
+            //foreach (var x in elements)
+            //{
+            //    if (IsLeq(x, a, k) && IsLeq(x, b, k))
+            //    {
+            //        lowerBounds.Add(x);
+            //    }
+            //}
+            //if (lowerBounds.Count == 0) return false;
+
+            //ElementArbreK greatestLowerBound = lowerBounds[0];
+            //foreach (var x in lowerBounds)
+            //{
+            //    if (IsLeq(greatestLowerBound, x, k))
+            //    {
+            //        greatestLowerBound = x;
+            //    }
+            //}
+            //return true;
+
+            var lowerBounds = elements.Where(x => IsLeq(x, a, k) && IsLeq(x, b, k)).ToList();
+            if (lowerBounds.Count == 0) return false;
+
+            var greatestLowerBound = lowerBounds.FirstOrDefault(lb => lowerBounds.All(x => !IsLeq(lb, x, k)
+                                                                                        || EqualityComparer<ElementArbreK>.Default.Equals(x, lb)));
+            return greatestLowerBound != null;
         }
     }
 }

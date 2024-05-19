@@ -7,7 +7,10 @@ const string repertoireArbresK = "C:\\Users\\nadir\\source\\repos\\CombinatoireS
 const string repertoirePosetsK = "C:\\Users\\nadir\\source\\repos\\CombinatoireSandbox\\CombinatoireSandbox\\Images\\Posets\\PrunningGraftingK";
 
 //var prunningGraftingBinaire = new PrunningGraftingBinaire(repertoirePosetsBinaire, repertoireArbresBinaires);
-//prunningGraftingBinaire.ObtenirPoset(4);
+//prunningGraftingBinaire.GenererPoset(4);
 
 var prunningGraftingK = new PrunningGraftingK(repertoirePosetsK, repertoireArbresK);
-prunningGraftingK.ObtenirPoset(3, 3);
+var (nomFichier, isLattice) = prunningGraftingK.GenererPoset(3, 4);
+
+Console.WriteLine(nomFichier);
+Console.WriteLine($"Is Lattice -> {isLattice}");
