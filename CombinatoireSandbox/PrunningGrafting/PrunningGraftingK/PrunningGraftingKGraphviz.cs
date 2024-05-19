@@ -35,7 +35,7 @@ namespace CombinatoireSandbox.PrunningGrafting.PrunningGraftingK
 
             foreach (var arbre in toutLesArbres)
             {
-                var graphvizArbreKService = new ArbreKGraphvizService();
+                var graphvizArbreKService = new ArbreKGraphviz();
                 var parenthesageArbre = arbre.ObtenirParenthesage();
                 var parenthesageLettre = ConvertirParenthesageEnLettre(parenthesageArbre);
                 var cheminVersImage = graphvizArbreKService.GenererImageArbreK(arbre, parenthesageLettre, n, k, repertoireArbres);

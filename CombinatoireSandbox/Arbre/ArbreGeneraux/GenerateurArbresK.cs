@@ -1,9 +1,8 @@
-﻿using CombinatoireSandbox.Arbre.ArbreGeneraux;
-
-namespace CombinatoireSandbox.Experimentation
+﻿namespace CombinatoireSandbox.Arbre.ArbreGeneraux
 {
     // THE COMPUTER JOURNAL, VOL. 35, NO. 3, PAGE. 308, 1992
-    public class SequenceGenerator
+
+    public class GenerateurArbresK
     {
         private int compteur = 1;
         private List<int> lowerBound;
@@ -15,7 +14,7 @@ namespace CombinatoireSandbox.Experimentation
 
         private List<ElementArbreK> arbres;
 
-        public SequenceGenerator(int k, int n)
+        public GenerateurArbresK(int k, int n)
         {
             this.n = n;
             this.k = k;

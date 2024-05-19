@@ -107,7 +107,7 @@ namespace CombinatoireSandbox.PrunningGrafting.PrunningGraftingK
                     arbresAvecPremierNoeudSuprimme.Add(nouveauNoeudApresSupression);
                 }
 
-                // Etape 3 - Transfert des noeud 
+                // Etape 3 - Transfert des noeuds
                 for (int jj = 0; jj < arbresAvecPremierNoeudSuprimme.Count; jj++)
                 {
                     var nouveauJ = arbresAvecPremierNoeudSuprimme[jj];
@@ -246,7 +246,7 @@ namespace CombinatoireSandbox.PrunningGrafting.PrunningGraftingK
             }
             else
             {
-                throw new InvalidOperationException("Erreur Innatendu : type de l'element ne correspond pas a ElementArbreK");
+                throw new InvalidOperationException("Erreur : type de l'element ne correspond pas a ElementArbreK");
             }
         }
 
@@ -280,26 +280,6 @@ namespace CombinatoireSandbox.PrunningGrafting.PrunningGraftingK
 
         private bool ExistsJoin(List<ElementArbreK> elements, ElementArbreK a, ElementArbreK b, int k)
         {
-            //var upperBounds = new List<ElementArbreK>();
-            //foreach (var x in elements)
-            //{
-            //    if (IsLeq(a, x, k) && IsLeq(b, x, k))
-            //    {
-            //        upperBounds.Add(x);
-            //    }
-            //}
-            //if (upperBounds.Count == 0) return false;
-
-            //ElementArbreK leastUpperBound = upperBounds[0];
-            //foreach (var x in upperBounds)
-            //{
-            //    if (IsLeq(x, leastUpperBound, k))
-            //    {
-            //        leastUpperBound = x;
-            //    }
-            //}
-            //return true;
-
             var upperBounds = elements.Where(x => IsLeq(a, x, k) && IsLeq(b, x, k)).ToList();
             if (upperBounds.Count == 0) return false;
 
@@ -310,26 +290,6 @@ namespace CombinatoireSandbox.PrunningGrafting.PrunningGraftingK
 
         private bool ExistsMeet(List<ElementArbreK> elements, ElementArbreK a, ElementArbreK b, int k)
         {
-            //var lowerBounds = new List<ElementArbreK>();
-            //foreach (var x in elements)
-            //{
-            //    if (IsLeq(x, a, k) && IsLeq(x, b, k))
-            //    {
-            //        lowerBounds.Add(x);
-            //    }
-            //}
-            //if (lowerBounds.Count == 0) return false;
-
-            //ElementArbreK greatestLowerBound = lowerBounds[0];
-            //foreach (var x in lowerBounds)
-            //{
-            //    if (IsLeq(greatestLowerBound, x, k))
-            //    {
-            //        greatestLowerBound = x;
-            //    }
-            //}
-            //return true;
-
             var lowerBounds = elements.Where(x => IsLeq(x, a, k) && IsLeq(x, b, k)).ToList();
             if (lowerBounds.Count == 0) return false;
 

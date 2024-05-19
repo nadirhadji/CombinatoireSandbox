@@ -3,13 +3,13 @@ using System.Text;
 
 namespace CombinatoireSandbox.Arbre.ArbreGeneraux
 {
-    public class ArbreKGraphvizService
+    public class ArbreKGraphviz
     {
         private int compteur;
         private StringBuilder noeuds;
         private StringBuilder aretes;
 
-        public ArbreKGraphvizService()
+        public ArbreKGraphviz()
         {
             compteur = 0;
             noeuds = new StringBuilder();

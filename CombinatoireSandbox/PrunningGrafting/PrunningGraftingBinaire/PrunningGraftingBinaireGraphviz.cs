@@ -35,7 +35,7 @@ namespace CombinatoireSandbox.PrunningGrafting.PrunningGraftingBinaire
 
             foreach (var arbre in toutLesArbres)
             {
-                var graphvizArbreBinaireService = new ArbreBinaireGraphvizService();
+                var graphvizArbreBinaireService = new ArbreBinaireGraphviz();
                 var parenthesageArbre = arbre.ObtenirParenthesage();
                 var parenthesageLettre = ConvertirParenthesageEnLettre(parenthesageArbre);
                 var cheminVersImage = graphvizArbreBinaireService.GenererImageArbreBinaire(arbre, parenthesageLettre, nombreNoeud, repertoireArbres);

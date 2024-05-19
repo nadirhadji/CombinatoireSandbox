@@ -11,7 +11,7 @@ const string repertoirePosetsK = "C:\\Users\\nadir\\source\\repos\\CombinatoireS
 
 var prunningGraftingK = new PrunningGraftingK(repertoirePosetsK, repertoireArbresK);
 
-prunningGraftingK.GenererPoset(5, 2);
+prunningGraftingK.GenererPoset(5, 5);
 
 //Console.WriteLine(nomFichier);
 //Console.WriteLine($"Is Lattice -> {isLattice}");

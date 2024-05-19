@@ -1,5 +1,4 @@
-﻿using CombinatoireSandbox.Experimentation;
-using System.Text;
+﻿using System.Text;
 
 namespace CombinatoireSandbox.Arbre.ArbreGeneraux
 {
@@ -82,7 +81,7 @@ namespace CombinatoireSandbox.Arbre.ArbreGeneraux
     {
         public static List<ElementArbreK> GenererTousLesArbres(int n, int k)
         {
-            SequenceGenerator generator = new SequenceGenerator(k, n);
+            var generator = new GenerateurArbresK(k, n);
             generator.Execute();
             return generator.ObtenirToutLesArbres();
         }
