@@ -40,10 +40,10 @@ namespace Combinatoire
             Console.WriteLine(" |      [1] : Générateur d'arbres binaires                             | ");
             Console.WriteLine(" |      [2] : Générateur d'arbres d'arité K                            | ");
             Console.WriteLine(" +---------------------------------------------------------------------+ ");
-            Console.WriteLine(" |  Ordre coupe-greffe                                                 | ");
+            Console.WriteLine(" |  Ordre Coupe-Greffe                                                 | ");
             Console.WriteLine(" +---------------------------------------------------------------------+ ");
-            Console.WriteLine(" |      [3] : Générateur de poset coupe-greffe sur les arbres binaires | ");
-            Console.WriteLine(" |      [4] : Générateur de poset coupe-greffe sur les arbres généraux | ");
+            Console.WriteLine(" |      [3] : Coupe-Greffe sur les arbres binaires                     | ");
+            Console.WriteLine(" |      [4] : Coupe-Greffe sur les arbres d'arité k                    | ");
             Console.WriteLine(" +---------------------------------------------------------------------+ ");
             Console.WriteLine(" |  Configuration                                                      | ");
             Console.WriteLine(" +---------------------------------------------------------------------+ ");
@@ -69,10 +69,10 @@ namespace Combinatoire
                     GenererArbresK();
                     break;
                 case "3":
-                    GenerateBinaryTreePoset();
+                    PrunningGraftingSurArbresBinaires();
                     break;
                 case "4":
-                    GenerateGeneralTreePoset();
+                    PrunningGraftingSurArbresK();
                     break;
                 case "5":
                     AfficherRepertoireResultats();
@@ -134,7 +134,7 @@ namespace Combinatoire
             }
         }
 
-        static void GenerateBinaryTreePoset()
+        static void PrunningGraftingSurArbresBinaires()
         {
             Console.WriteLine("===========================================================");
             Console.WriteLine("       Ordre coupe-greffe sur les arbres binaires ");
@@ -157,7 +157,7 @@ namespace Combinatoire
             }
         }
 
-        static void GenerateGeneralTreePoset()
+        static void PrunningGraftingSurArbresK()
         {
             Console.WriteLine("===========================================================");
             Console.WriteLine("         Ordre coupe-greffe sur les arbres généraux ");
