@@ -7,8 +7,8 @@ namespace Combinatoire
 {
     class Program
     {
-        static string RepertoireResultatArbres = "C:\\Users\\nadir\\source\\repos\\CombinatoireSandbox\\CombinatoireSandbox\\Images\\Arbres";
-        static string RepertoireResultatPosets = "C:\\Users\\nadir\\source\\repos\\CombinatoireSandbox\\CombinatoireSandbox\\Images\\Posets";
+        static string RepertoireResultatArbres = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "Arbres");
+        static string RepertoireResultatPosets = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images", "Posets");
 
         static void Main(string[] args)
         {
